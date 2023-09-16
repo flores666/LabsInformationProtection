@@ -1,0 +1,75 @@
+@model InputModel
+
+<script>
+$(document).ready(function() {
+        $('#clear').click(function (){
+            let inputs = document.querySelectorAll('input');
+            inputs.forEach(function (input) {
+                input.value = '';
+            });
+        });
+        
+        $('#encrypt, #decrypt').click(function () {
+            let input;
+            let isDecryptFunc = false;
+            let key = document.getElementById('key')?.value;
+            
+            if (this.id == 'decrypt')
+                {
+                    input = document.getElementById('output').value;
+                    isDecryptFunc = true;
+                    
+                }
+            else input = document.getElementById('input').value;
+            
+            let object = { Input : input, Key : key };
+            
+            $.ajax({
+                url: "/@ViewContext.RouteData.Values["Controller"]/Index",
+                type: "POST",
+                data: { 
+                    model : object,
+                    isDecryptFunc : isDecryptFunc
+                },
+                success: function (json) {
+                    if (json != null) {
+                        input = json.input;
+                        key = json.key;
+                        document.getElementById('output').value = json.output;
+                    }
+                }
+            });
+        });
+    });
+</script>
+
+<h1 class="text-center pt-5">@(ViewBag.EncryptionMethod ?? "")</h1>
+
+<form class="container text-center form pt-5">
+    <div class="form-floating mb-3">
+        <input id="input" asp-for="Input" class="form-control">
+        <label asp-for="Input" class="form-label"></label>
+        <span asp-validation-for="Input" class="text-danger"></span>
+    </div>
+
+    <div class="form-floating mb-3">
+        <input id="key" asp-for="Key" class="form-control">
+        <label asp-for="Key" class="form-label"></label>
+        <span asp-validation-for="Key" class="text-danger"></span>
+    </div>
+
+    <div class="form-floating mb-3">
+        <input id="output" asp-for="Output" class="form-control" disabled>
+        <label asp-for="Output" class="form-label"></label>
+    </div>
+
+    <div class="row">
+        <button type="button" class="btn btn-primary bg-dark col me-2" id="encrypt">Зашифровать</button>
+        <button type="button" class="btn btn-primary bg-dark col" id="decrypt">Расшифровать</button>
+        <button type="button" class="btn btn-secondary col-1 ms-2" id="clear">Очистить</button>
+    </div>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial"/>
+}
