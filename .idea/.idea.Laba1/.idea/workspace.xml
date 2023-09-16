@@ -8,20 +8,33 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="229abe25-de0d-4279-ae2c-8cc1bb75424d" name="Changes" comment="" />
+    <list default="true" id="229abe25-de0d-4279-ae2c-8cc1bb75424d" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.Laba1/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Laba1/.idea/workspace.xml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="master" />
+      </map>
+    </option>
+  </component>
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/a4ce65cb554c4c7d9a882e6d47d4dff11e2000/3f/5dcf734c/ActionMethodExecutor.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Labs/Data.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Labs/Encryptors/IEncryptor.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock:///home/regeneration/RiderProjects/Защита информации/Laba1/Labs/Controllers/Laba2Controller.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///home/regeneration/RiderProjects/Защита информации/Laba1/Labs/Controllers/Laba2Controller.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///home/regeneration/RiderProjects/Защита информации/Laba1/Labs/Controllers/Laba2Controller.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///home/regeneration/RiderProjects/Защита информации/Laba1/Labs/Controllers/Laba2Controller.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///home/regeneration/RiderProjects/Защита информации/Laba1/Labs/Controllers/Laba2Controller.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Labs/Encryptors/PermutationEncryptor.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Labs/Extensions/KeyValidationAttribute.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Labs/Views/Shared/_Layout.cshtml" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
   </component>
+  <component name="MetaFilesCheckinStateConfiguration" checkMetaFiles="false" />
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 4
 }</component>
@@ -31,26 +44,26 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "last_opened_file_path": "/home/regeneration/RiderProjects/Защита информации/Laba1",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/home/regeneration/RiderProjects/Защита информации/Laba1&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   },
-  "keyToStringList": {
-    "rider.external.source.directories": [
-      "/home/regeneration/.config/JetBrains/Rider2023.2/resharper-host/DecompilerCache",
-      "/home/regeneration/.config/JetBrains/Rider2023.2/resharper-host/SourcesCache",
-      "/home/regeneration/.local/share/Symbols/src"
+  &quot;keyToStringList&quot;: {
+    &quot;rider.external.source.directories&quot;: [
+      &quot;/home/regeneration/.config/JetBrains/Rider2023.2/resharper-host/DecompilerCache&quot;,
+      &quot;/home/regeneration/.config/JetBrains/Rider2023.2/resharper-host/SourcesCache&quot;,
+      &quot;/home/regeneration/.local/share/Symbols/src&quot;
     ]
   }
-}]]></component>
+}</component>
   <component name="RunManager" selected=".NET Launch Settings Profile.Laba1: http">
     <configuration name="Laba1: http" type="LaunchSettings" factoryName=".NET Launch Settings Profile">
       <option name="LAUNCH_PROFILE_PROJECT_FILE_PATH" value="$PROJECT_DIR$/Labs/Labs.csproj" />
@@ -100,6 +113,7 @@
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
+  <component name="UnityCheckinConfiguration" checkUnsavedScenes="false" />
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
   </component>

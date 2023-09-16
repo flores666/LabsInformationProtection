@@ -17,6 +17,7 @@ public class Laba2Controller : Controller
     [HttpPost]
     public IActionResult Index(InputModel model, bool isDecryptFunc)
     {
+        var a = 0;
         if (!ModelState.IsValid) return View();
         var encryptor = new PermutationEncryptor(model.Key);
         model.Output = isDecryptFunc ? encryptor.Decrypt(model.Input) : encryptor.Encrypt(model.Input);
