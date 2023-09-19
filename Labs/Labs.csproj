@@ -8,4 +8,9 @@
     </PropertyGroup>
 
 
+
+    <ItemGroup>
+      <ProjectReference Include="..\lib.Labs\lib.Labs.csproj" />
+    </ItemGroup>
+
 </Project>

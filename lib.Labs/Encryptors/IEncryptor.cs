@@ -1,9 +1,9 @@
-namespace Laba1.Encryptors;
+namespace lib.Labs.Encryptors;
 
-public interface IEncryptor<T>
+public interface IEncryptor
 {
     public string Encrypt(string input);
     public string Decrypt(string input);
-    public T Key { get; set; }
+    public string Key { get; }
     public string ALPHABET { get; }
 }

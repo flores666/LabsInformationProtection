@@ -1,9 +1,10 @@
-using Laba1.Encryptors;
+using Laba1;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddSingleton<ILabsContext, LabsContext>();
 
 var app = builder.Build();
 
@@ -24,6 +25,6 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Laba1}/{action=Index}/{id?}");
+    pattern: "{controller=Labs}/{action=Index}/{id?}");
 
 app.Run();

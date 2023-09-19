@@ -29,3 +29,6 @@
 /home/regeneration/RiderProjects/Защита информации/Laba1/Labs/obj/Debug/net7.0/Labs.pdb
 /home/regeneration/RiderProjects/Защита информации/Laba1/Labs/obj/Debug/net7.0/Labs.genruntimeconfig.cache
 /home/regeneration/RiderProjects/Защита информации/Laba1/Labs/obj/Debug/net7.0/ref/Labs.dll
+/home/regeneration/RiderProjects/Защита информации/Laba1/Labs/bin/Debug/net7.0/lib.Labs.dll
+/home/regeneration/RiderProjects/Защита информации/Laba1/Labs/bin/Debug/net7.0/lib.Labs.pdb
+/home/regeneration/RiderProjects/Защита информации/Laba1/Labs/obj/Debug/net7.0/Labs.csproj.CopyComplete
