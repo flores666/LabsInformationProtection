@@ -2,11 +2,14 @@ namespace lib.Labs.Encryptors;
 
 public class SubstitutionEncryptor : EncryptorBase
 {
-    public SubstitutionEncryptor(string key)
+    private readonly List<string> _keyCombinations;
+    
+    public SubstitutionEncryptor(string key, string alphabet)
     {
-        ALPHABET = "абвгдеёжзийклмнопрстуфхцчшщъыьэюя";
-        Key = "мфтйбвкёгцрсуэихьноажлпеяюызщшчъд";
+        ALPHABET = alphabet;
+        Key = "042513";
         var length = ALPHABET.Length;
+        _keyCombinations = GenerateCombinations(Key);
         
         if (key.Length < length)
         {
@@ -21,31 +24,76 @@ public class SubstitutionEncryptor : EncryptorBase
             Key = key.Substring(0, length);
         }
     }
-    
+
     public override string Encrypt(string text)
     {
-        if (!ValidateInput(text)) return "error";
-        var result = new List<char>();
-        foreach (var ch in text)
+        var splittedString = SplitString(text, 2);
+        
+        var result = new List<string>();
+        foreach (var chunk in splittedString)
         {
-            var index = ALPHABET.IndexOf(ch);
-            result.Add(index == -1 ? ch : Key[index]);
+            var i = int.Parse(chunk[0].ToString());
+            if (chunk.Length == 2)
+            {
+                var j = int.Parse(chunk[1].ToString());
+                result.Add(_keyCombinations[i] + _keyCombinations[j]);
+            }
+            else
+            {
+                result.Add(_keyCombinations[i]);
+            }
         }
 
-        return new string(result.ToArray());
+        return string.Join("", result);
     }
 
     public override string Decrypt(string text)
     {
-        if (!ValidateInput(text)) return "error";
-        var result = new List<char>();
-        foreach (var ch in text)
+        var splittedString = SplitString(text, 2);
+        var result = new List<string>();
+        
+        foreach (var chunk in splittedString)
         {
-            var index = Key.IndexOf(ch);
-            result.Add(index == -1 ? ch : ALPHABET[index]);
+            result.Add(_keyCombinations.IndexOf(chunk).ToString());
         }
 
-        return new string(result.ToArray());
+        return string.Join("", result);
     }
 
+    private static List<string> GenerateCombinations(string input)
+    {
+        var result = new List<string>();
+        var length = input.Length;
+
+        for (int i = 0; i < length; i++)
+        {
+            for (int j = 0; j < length; j++)
+            {
+                var combination = "" + input[i] + input[j];
+                if (!result.Contains(combination))
+                {
+                    result.Add(combination);
+                }
+            }
+        }
+
+        return result;
+    }
+
+    private static List<string> SplitString(string input, int chunkSize)
+    {
+        int length = input.Length;
+        int numOfChunks = (length + chunkSize - 1) / chunkSize;
+
+        var chunks = new List<string>();
+
+        for (int i = 0; i < numOfChunks; i++)
+        {
+            int startIndex = i * chunkSize;
+            int endIndex = Math.Min(startIndex + chunkSize, length);
+            chunks.Add(input.Substring(startIndex, endIndex - startIndex));
+        }
+
+        return chunks;
+    }
 }

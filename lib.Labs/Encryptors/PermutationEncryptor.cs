@@ -6,18 +6,18 @@ public class PermutationEncryptor : EncryptorBase
 {
     private int[] _key;
     
-    public PermutationEncryptor(string key)
+    public PermutationEncryptor(string key, string alphabet)
     {
         Key = key;
         _key = Key.Split(",").Select(int.Parse).ToArray();
+        ALPHABET = alphabet;
     }
 
     public override string Encrypt(string input)
     {
-        if (!ValidateInput(input)) return "error";
         var result = new StringBuilder();
         var len = _key.Length;
-        input = AddSpacesToEnd(input);
+        input = FillEnding(input);
         
         for (int i = 0; i < input.Length; i += len)
         {
@@ -34,7 +34,7 @@ public class PermutationEncryptor : EncryptorBase
         return result.ToString();
     }
 
-    private string AddSpacesToEnd(string msg)
+    private string FillEnding(string msg)
     {
         var len = _key.Length;
         var toAddLength = len - msg.Length % len;
@@ -43,7 +43,7 @@ public class PermutationEncryptor : EncryptorBase
         var spaces = new char[toAddLength];
         for (int i = 0; i < toAddLength; i++)
         {
-            spaces[i] = ' ';
+            spaces[i] = ALPHABET[0];
         }
 
         return msg + new string(spaces);
@@ -51,10 +51,9 @@ public class PermutationEncryptor : EncryptorBase
 
     public override string Decrypt(string input)
     {
-        if (!ValidateInput(input)) return "error";
         var result = new StringBuilder();
         var len = _key.Length;
-        _key = PrepareKeyToDecrypt();
+        _key = PrepareKey();
         for (int i = 0; i < input.Length; i += len)
         {
             var sub = input.Substring(i, len);
@@ -70,7 +69,7 @@ public class PermutationEncryptor : EncryptorBase
         return result.ToString();
     }
 
-    private int[] PrepareKeyToDecrypt()
+    private int[] PrepareKey()
     {
         var result = new int[_key.Length];
         for (int i = 0; i < _key.Length; i++)

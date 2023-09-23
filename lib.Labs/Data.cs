@@ -13,18 +13,45 @@ public enum LabType
     Lab9
 }
 
+public class LabProperties
+{
+    public string Name { get; }
+    public string Alphabet { get; }
+    public int TextBlockLength { get; }
+    public int KeyLength { get; }
+    public string KeyPattern { get; set; }
+    public int FuncValuesCount { get; }
+
+    public LabProperties(string name, string alphabet, int textBlockLength, string keyPattern)
+    {
+        Name = name;
+        Alphabet = alphabet;
+        KeyLength = TextBlockLength = textBlockLength;
+        FuncValuesCount = (int)Math.Pow(Alphabet.Length, KeyLength);
+        KeyPattern = keyPattern;
+    }
+}
+
 public static class Data
 {
-    public static IDictionary<LabType, string> LabNames = new Dictionary<LabType, string>()
+    public static int LabsCount => _labProps.Count;
+
+    private static IDictionary<LabType, Func<LabProperties>> _labProps = new Dictionary<LabType, Func<LabProperties>>()
     {
-        {LabType.Lab1, "Метод подстановки"},
-        {LabType.Lab2, "Метод перестановки"},
-        {LabType.Lab3, "Метод "},
-        {LabType.Lab4, "Метод "},
-        {LabType.Lab5, "Метод "},
-        {LabType.Lab6, "Метод "},
-        {LabType.Lab7, "Метод "},
-        {LabType.Lab8, "Метод "},
-        {LabType.Lab9, "Метод "},
+        [LabType.Lab1] = () => new("Метод подстановки", "012345", 2, "[0-5]"),
+        [LabType.Lab2] = () => new("Метод перестановки", "0123456789ABCDEF", 16, "[0-9,]"),
+        [LabType.Lab3] = () => new("?", "?", 0, ""),
     };
+
+    public static bool TryGetLabProperties(LabType lab, out LabProperties props)
+    {
+        if (_labProps.TryGetValue(lab, out var value))
+        {
+            props = value.Invoke();
+            return true;
+        }
+
+        props = null;
+        return false;
+    }
 }

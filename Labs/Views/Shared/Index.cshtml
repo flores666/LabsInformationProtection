@@ -1,7 +1,7 @@
 @model InputModel
 
 @{
-    var currentLab = labsContext.CurrentLabType;
+    var currentLab = labsContext.LabType;
     ViewData["Title"] = currentLab;
 }
 
@@ -30,7 +30,6 @@ $(document).ready(function() {
             else {
                 input = document.getElementById('input').value;
                 isDecryptPressed = false;
-                decryptBtn.prop('disabled', false);
             }
 
             $.ajax({
@@ -40,10 +39,15 @@ $(document).ready(function() {
                     model : { Input : input, Key : key },
                     IsDecryptPressed : isDecryptPressed
                 },
+                dataType: "json",
                 success: function (json) {
-                    if (json != null) {
+                    if (json.error == null) {
                         document.getElementById('input').value = json.input;
                         document.getElementById('output').value = json.output;
+                        if (!isDecryptPressed) decryptBtn.prop('disabled', false);
+                    }
+                    else {
+                        $('#shared-span').text(json.error);
                     }
                 }
             });
@@ -52,16 +56,18 @@ $(document).ready(function() {
 </script>
 
 <h1 class="text-center pt-5">@(ViewData["Header"] ?? "")</h1>
-
 <form class="container text-center form pt-5">
+<span id="shared-span" class="text-danger d-flex start-0 pb-1"></span>
     <div class="form-floating mb-3">
         <input id="input" asp-for="Input" class="form-control">
+        <span class="tooltip-text">Алфавит ввода: @labsContext.LabProperties?.Alphabet?.ToString()</span>
         <label asp-for="Input" class="form-label"></label>
-        <span asp-validation-for="Input" class="text-danger"></span>
+        <span id="input-span" asp-validation-for="Input" class="text-danger"></span>
     </div>
 
     <div class="form-floating mb-3">
         <input id="key" asp-for="Key" class="form-control">
+        <span class="tooltip-text">Правило ввода ключа: @labsContext.LabProperties?.KeyPattern?.ToString()</span>
         <label asp-for="Key" class="form-label"></label>
         <span asp-validation-for="Key" class="text-danger"></span>
     </div>

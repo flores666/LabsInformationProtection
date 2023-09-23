@@ -7,14 +7,14 @@ public abstract class EncryptorBase : IEncryptor
 
     protected EncryptorBase() { }
 
-    public static EncryptorBase GetEncryptor(LabType type, string key)
+    public static EncryptorBase GetEncryptor(LabType type, string key, string alphabet)
     {
         switch (type)
         {
             case LabType.Lab1:
-                return new SubstitutionEncryptor(key);
+                return new SubstitutionEncryptor(key, alphabet);
             case LabType.Lab2:
-                return new PermutationEncryptor(key);
+                return new PermutationEncryptor(key, alphabet);
             default:
                 return null;
         }
@@ -23,8 +23,8 @@ public abstract class EncryptorBase : IEncryptor
     public abstract string Encrypt(string input);
     public abstract string Decrypt(string input);
 
-    protected bool ValidateInput(string text)
+    public bool ValidateInput(string text)
     {
-        return text.All(ch => ALPHABET.Contains(ch));
+        return ALPHABET == null || text.All(ch => ALPHABET.Contains(ch));
     }
 }

@@ -1,3 +1,4 @@
+using System.Text.RegularExpressions;
 using Laba1.Models;
 using lib.Labs;
 using lib.Labs.Encryptors;
@@ -8,6 +9,7 @@ namespace Laba1.Controllers;
 public class LabsController : Controller
 {
     private readonly ILabsContext _labsContext;
+    private readonly LabProperties _curLabProps;
     
     public LabsController(ILabsContext labsContext)
     {
@@ -17,9 +19,8 @@ public class LabsController : Controller
     [HttpGet]
     public IActionResult Index([FromQuery]int type = 0)
     {
-        _labsContext.CurrentLabType = (LabType)type;
-        if (!Data.LabNames.TryGetValue(_labsContext.CurrentLabType, out var value)) return NotFound(); 
-        ViewData["Header"] = value.ToUpper();
+        _labsContext.LabType = (LabType)type;
+        ViewData["Header"] = _labsContext.LabProperties.Name.ToUpper();
         return View();
     }
     
@@ -27,7 +28,14 @@ public class LabsController : Controller
     public IActionResult Index(InputModel model, bool IsDecryptPressed)
     {
         if (!ModelState.IsValid) return View();
-        var encryptor = EncryptorBase.GetEncryptor(_labsContext.CurrentLabType, model.Key);
+        if (!Regex.IsMatch(model.Key, _labsContext.LabProperties.KeyPattern)) 
+            return Json(new { Error = "Ключ содержит недопустимые символы"});
+        
+        var encryptor = EncryptorBase.GetEncryptor(_labsContext.LabType, model.Key, _labsContext.LabProperties.Alphabet);
+        if (encryptor == null) return Json(new {Error = "Шифратор не загружен"});
+        
+        if (!encryptor.ValidateInput(model.Input)) return Json(new {Error = "Ввод не соответствует алфавиту"});
+        
         model.Output = IsDecryptPressed ? encryptor.Decrypt(model.Input) : encryptor.Encrypt(model.Input);
         return Json(model);
     }
