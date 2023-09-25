@@ -35,8 +35,8 @@ public static class Data
 
     private static IDictionary<LabType, Func<LabProperties>> _labProps = new Dictionary<LabType, Func<LabProperties>>()
     {
-        [LabType.Lab1] = () => new("Метод подстановки", "[0-5]", 2, "[0-5]"),
-        [LabType.Lab2] = () => new("Метод перестановки", "[0-9A-F]", 16, "[0-9,]"),
+        [LabType.Lab1] = () => new("Метод подстановки", "012345", 2, "[0-5]"),
+        [LabType.Lab2] = () => new("Метод перестановки", "012345ABCDEF", 16, "[0-9,]"),
         [LabType.Lab3] = () => new("Линейное шифрование (гаммирование)", "[ -~]", 0, ""),
     };
 

@@ -31,7 +31,8 @@ public class LabsController : Controller
         if (model.Key != null && !Regex.IsMatch(model.Key, _labsContext.LabProperties.KeyPattern)) 
             return Json(new { Error = "Ключ содержит недопустимые символы"});
         
-        var encryptor = EncryptorBase.GetEncryptor(_labsContext.LabType, model.Key, _labsContext.LabProperties.Alphabet);
+        var encryptor = EncryptorBase.GetEncryptor(_labsContext.LabType, model.Key, 
+            _labsContext.LabProperties.Alphabet, model.Input.Length);
         if (encryptor == null) return Json(new {Error = "Шифратор не загружен"});
         
         if (!encryptor.ValidateInput(model.Input)) return Json(new {Error = "Ввод не соответствует алфавиту"});

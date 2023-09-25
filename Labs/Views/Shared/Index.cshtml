@@ -52,6 +52,9 @@ $(document).ready(function() {
                 }
             });
         });
+        if ('@string.IsNullOrEmpty(labsContext.LabProperties.KeyPattern)' === 'True') {
+            $('#key').prop('disabled', true);
+        }
     });
 </script>
 
