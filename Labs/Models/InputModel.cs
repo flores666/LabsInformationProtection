@@ -8,8 +8,7 @@ public class InputModel
     [Required]
     public string Input { get; set; }
     
-    [Required]
-    public string Key { get; set; }
+    public string? Key { get; set; }
     
     public string? Output { get; set; }
 }

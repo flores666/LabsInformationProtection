@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using System.Text.RegularExpressions;
 using Laba1.Models;
 using lib.Labs;
@@ -9,7 +10,6 @@ namespace Laba1.Controllers;
 public class LabsController : Controller
 {
     private readonly ILabsContext _labsContext;
-    private readonly LabProperties _curLabProps;
     
     public LabsController(ILabsContext labsContext)
     {
@@ -28,7 +28,7 @@ public class LabsController : Controller
     public IActionResult Index(InputModel model, bool IsDecryptPressed)
     {
         if (!ModelState.IsValid) return View();
-        if (!Regex.IsMatch(model.Key, _labsContext.LabProperties.KeyPattern)) 
+        if (model.Key != null && !Regex.IsMatch(model.Key, _labsContext.LabProperties.KeyPattern)) 
             return Json(new { Error = "Ключ содержит недопустимые символы"});
         
         var encryptor = EncryptorBase.GetEncryptor(_labsContext.LabType, model.Key, _labsContext.LabProperties.Alphabet);
@@ -39,4 +39,6 @@ public class LabsController : Controller
         model.Output = IsDecryptPressed ? encryptor.Decrypt(model.Input) : encryptor.Encrypt(model.Input);
         return Json(model);
     }
+    
+    
 }

@@ -15,6 +15,8 @@ public abstract class EncryptorBase : IEncryptor
                 return new SubstitutionEncryptor(key, alphabet);
             case LabType.Lab2:
                 return new PermutationEncryptor(key, alphabet);
+            case LabType.Lab3:
+                return new LinearEncryptor();
             default:
                 return null;
         }
