@@ -15,6 +15,17 @@ $(document).ready(function() {
                 input.value = '';
                 isDecryptPressed = false;
             });
+            
+            document.querySelectorAll('textarea').forEach(function (input) {
+                input.value = '';
+                isDecryptPressed = false;
+            });
+            
+            document.querySelectorAll('span').forEach(function (input) {
+                input.innerText = '';
+                isDecryptPressed = false;
+            });
+            
             decryptBtn.prop('disabled', true);
         });
         
@@ -58,34 +69,43 @@ $(document).ready(function() {
     });
 </script>
 
-<h1 class="text-center pt-5">@(ViewData["Header"] ?? "")</h1>
-<form class="container text-center form pt-5">
-<span id="shared-span" class="text-danger d-flex start-0 pb-1"></span>
-    <div class="form-floating mb-3">
-        <input id="input" asp-for="Input" class="form-control">
-        <span class="tooltip-text">Алфавит ввода: @labsContext.LabProperties?.Alphabet?.ToString()</span>
-        <label asp-for="Input" class="form-label"></label>
-        <span id="input-span" asp-validation-for="Input" class="text-danger"></span>
-    </div>
+<div class="container">
+        <div class="header">
+            <h1>@ViewData["Header"]</h1>
+        </div>
+        <form class="form">
+            <span id="shared-span" class="text-danger d-flex start-0 pb-1"></span>
 
-    <div class="form-floating mb-3">
-        <input id="key" asp-for="Key" class="form-control">
-        <span class="tooltip-text">Правило ввода ключа: @labsContext.LabProperties?.KeyPattern?.ToString()</span>
-        <label asp-for="Key" class="form-label"></label>
-        <span asp-validation-for="Key" class="text-danger"></span>
-    </div>
+            <div class="inputs">
+                <div class="form-key">
+                    <input id="key" asp-for="Key" autocomplete="off">
+                    <label asp-for="Key"></label>
+                    <span asp-validation-for="Key" class="text-danger"></span>
+                </div>
+                
+                <div class="row pb-4 pt-3">
+                    <div class="form-input col">
+                        <textarea rows="6" id="input" asp-for="Input"></textarea>
+                        <label asp-for="Input"></label>
+                        <span id="input-span" asp-validation-for="Input" class="text-danger"></span>
+                    </div>
 
-    <div class="form-floating mb-3">
-        <input id="output" asp-for="Output" class="form-control" disabled>
-        <label asp-for="Output" class="form-label"></label>
-    </div>
+                    <div class="form-output col">
+                        <textarea rows="6" id="output" asp-for="Output" disabled></textarea>
+                        <label asp-for="Output"></label>
+                    </div>
+                </div>
+            </div>
 
-    <div class="row">
-        <button type="button" class="btn btn-primary bg-dark col me-2 border-0" id="encrypt">Зашифровать</button>
-        <button type="button" class="btn btn-primary bg-dark col border-0" id="decrypt" disabled>Расшифровать</button>
-        <button type="button" class="btn btn-secondary col-1 ms-2 border-0" id="clear">Очистить</button>
+            <div class="buttons">
+                <div class="row">
+                    <button type="button" class="col border-0" id="encrypt">Зашифровать</button>
+                    <button type="button" class="col border-0" id="decrypt" disabled>Расшифровать</button>
+                    <button type="button" class="col-1 border-0" id="clear"><img src="assets/trash.svg" alt="X"></button>
+                </div>
+            </div>
+        </form>
     </div>
-</form>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial"/>

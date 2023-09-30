@@ -12,22 +12,19 @@
 </head>
 <body>
 
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <div class="container-fluid">
-        <a class="navbar-brand fs-4">@(labsContext.LabType.ToString())</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav">
-                @for (int i = 0; i < Data.LabsCount; i++)
-                {
-                    <li class="nav-item">
-                        <a id="lab-link" class="nav-link" asp-controller="Labs" asp-action="Index" asp-route-type="@i">Lab @(i + 1)</a>
-                    </li>
-                }
-            </ul>
+<nav class="navbar-container">
+    <div class="navbar">
+        <div class="logo">
+            <h1>LABS</h1>
         </div>
+        <ul>
+            @for (int i = 0; i < Data.LabsCount; i++)
+            {
+                <li class="nav-item">
+                    <a id="lab-link" asp-controller="Labs" asp-action="Index" asp-route-type="@i">@(i + 1)</a>
+                </li>
+            }
+        </ul>
     </div>
 </nav>
 

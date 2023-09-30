@@ -1,40 +1,173 @@
 html {
-  font-size: 14px;
-}
+  font-size: 16px;
+  height: 100%;
+  --main-text-color: rgba(255, 255, 255, 0.6);
+  --header-text-color: rgba(255, 255, 255, 0.7);
 
-@media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
-}
-
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
-}
-
-html {
-  position: relative;
-  min-height: 100%;
+  --main-bg-color: #24242473;
+  --dark-bg-color: #0d101370;
 }
 
 body {
-  margin-bottom: 60px;
+  background-image: url("../assets/bg.png");
+  background-size: cover;
 }
 
-.form-floating .tooltip-text {
-  visibility: hidden;
-  width: auto;
-  background-color: grey;
-  color: white;
-  text-align: center;
-  padding: 5px 5px;
-  border-radius: 6px;
+li {
+  list-style: none;
+  color: black;
+}
+
+.navbar-container {
   position: absolute;
-  left: 84%;
-  top: -68px;
-  z-index: 1;
+  top: 0;
+  height: 100%;
 }
 
-.form-floating:hover .tooltip-text {
-  visibility: visible;
+.navbar {
+  margin: 2.4em 0 0 3em;
+  border-radius: 20px;
+  background-color: var(--main-bg-color);
+  width: 9em;
+}
+
+.navbar ul {
+  padding: 0;
+  width: 100%;
+  text-align: center;
+}
+
+.navbar a {
+  font-size: 36px;
+  font-weight: bold;
+  color: var(--main-text-color);
+  text-decoration: none;
+}
+
+.navbar a:hover {
+  color: white;
+}
+
+.logo {
+  width: 100%;
+  text-align: center;
+  background-color: var(--dark-bg-color);
+  border-radius: 12px;
+  margin: 0.1em 0.5em 1em 0.5em;
+  padding: 0.8em 1em 0.7em 1em;
+}
+
+.logo h1 {
+  color: var(--header-text-color);
+}
+
+.header {
+  color: var(--header-text-color);
+  text-align: center;
+  background-color: var(--dark-bg-color);
+  margin: 3em 0 3em 0;
+  padding: 0.5em;
+  border-radius: 12px;
+  box-shadow: 10px 15px 35px 3px rgba(0, 0, 0, 0.2);
+}
+
+.inputs,
+.buttons {
+  padding: 0 2em 0 2em;
+  background-color: var(--dark-bg-color);
+  box-shadow: 10px 15px 35px 3px rgba(0, 0, 0, 0.2);
+  padding: 2em;
+  border-radius: 20px;
+}
+
+.inputs {
+  margin-bottom: 2em;
+  padding-bottom: 0;
+}
+
+textarea,
+input {
+  color: var(--main-text-color);
+  font-size: 20px;
+  border: 0px;
+  box-shadow: 0 0 1px #424b5370;
+  background-color: #3d3d3d21;
+}
+
+textarea:focus,
+input:focus {
+  outline: none;
+  box-shadow: 0 0 10px #4e4e4e65;
+}
+
+.form-input textarea {
+  width: 100%;
+  border-radius: 10px;
+}
+
+.form-output textarea {
+  width: 100%;
+  border-radius: 10px;
+}
+
+.form-key input {
+  width: 100%;
+  border-radius: 10px;
+  height: 3em;
+}
+
+.buttons button {
+  height: 3em;
+  color: var(--main-text-color);
+  box-shadow: 0 0 1px #424b5370;
+  background-color: #3d3d3d21;
+  border-radius: 10px;
+  margin: 0 0.9em 0 0.9em;
+  font-size: 22px;
+  text-transform: uppercase;
+}
+
+.buttons button:hover {
+  background-color: #3d3d3d21;
+  box-shadow: 0 0 10px #4e4e4e65;
+}
+
+/* Общие стили для контейнера .form-key и .form-input */
+.form-key,
+.form-input,
+.form-output {
+  position: relative;
+  color: var(--main-text-color);
+}
+
+/* Стили для label внутри .form-key и .form-input */
+.form-key label,
+.form-input label,
+.form-output label {
+  position: absolute;
+  top: 0;
+  left: 10px; /* Измените значение left по вашему вкусу */
+  pointer-events: none;
+  transition: top 0.3s ease, font-size 0.3s ease;
+  font-size: 14px;
+}
+
+/* Стили для поднятия label при фокусировке на input и textarea */
+.form-key input:focus + label,
+.form-input input:focus + label,
+.form-input textarea:focus + label,
+.form-output textarea:focus + label {
+  top: 0;
+  font-size: 12px; /* Можете уменьшить размер шрифта при фокусировке */
+}
+
+.form-input label,
+.form-output label {
+  padding-left: 1em;
+}
+
+.form-key input,
+.form-input textarea,
+.form-output textarea{
+  padding: 1em;
 }
