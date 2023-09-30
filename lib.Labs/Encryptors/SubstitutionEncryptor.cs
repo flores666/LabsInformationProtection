@@ -1,16 +1,18 @@
+using System.Text;
+
 namespace lib.Labs.Encryptors;
 
+//Lab1
 public class SubstitutionEncryptor : EncryptorBase
 {
     private readonly List<string> _keyCombinations;
-    
+
     public SubstitutionEncryptor(string key, string alphabet)
     {
         ALPHABET = alphabet;
         Key = "042513";
         var length = ALPHABET.Length;
-        _keyCombinations = GenerateCombinations(Key);
-        
+
         if (key.Length < length)
         {
             Key = new string((key + Key).Distinct().ToArray());
@@ -21,26 +23,27 @@ public class SubstitutionEncryptor : EncryptorBase
         }
         else
         {
-            Key = key.Substring(0, length);
+            Key = new string(key.Substring(0, length).Distinct().ToArray());
         }
+        _keyCombinations = GenerateKeyCombinations(Key);
     }
 
     public override string Encrypt(string text)
     {
-        var splittedString = SplitString(text, 2);
-        
-        var result = new List<string>();
-        foreach (var chunk in splittedString)
+        var splitString = SplitString(text, 2);
+
+        var result = new StringBuilder();
+        foreach (var chunk in splitString)
         {
             var i = int.Parse(chunk[0].ToString());
             if (chunk.Length == 2)
             {
                 var j = int.Parse(chunk[1].ToString());
-                result.Add(_keyCombinations[i] + _keyCombinations[j]);
+                result.Append(_keyCombinations[i] + _keyCombinations[j]);
             }
             else
             {
-                result.Add(_keyCombinations[i]);
+                result.Append(_keyCombinations[i]);
             }
         }
 
@@ -49,35 +52,15 @@ public class SubstitutionEncryptor : EncryptorBase
 
     public override string Decrypt(string text)
     {
-        var splittedString = SplitString(text, 2);
-        var result = new List<string>();
-        
-        foreach (var chunk in splittedString)
+        var splitString = SplitString(text, 2);
+        var result = new StringBuilder();
+
+        foreach (var chunk in splitString)
         {
-            result.Add(_keyCombinations.IndexOf(chunk).ToString());
+            result.Append(_keyCombinations.IndexOf(chunk));
         }
 
-        return string.Join("", result);
-    }
-
-    private static List<string> GenerateCombinations(string input)
-    {
-        var result = new List<string>();
-        var length = input.Length;
-
-        for (int i = 0; i < length; i++)
-        {
-            for (int j = 0; j < length; j++)
-            {
-                var combination = "" + input[i] + input[j];
-                if (!result.Contains(combination))
-                {
-                    result.Add(combination);
-                }
-            }
-        }
-
-        return result;
+        return result.ToString();
     }
 
     private static List<string> SplitString(string input, int chunkSize)

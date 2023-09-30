@@ -50,7 +50,7 @@ public class LinearEncryptor : EncryptorBase
     {
         var A = 17;
         var C = 39;
-        var result = new List<int> {41};
+        var result = new List<int>(capacity:length*2) {41};
         var i = 1;
         var maxBytesInSymbol = 4;
         while (result.Count != length * maxBytesInSymbol)
