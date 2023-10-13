@@ -7,7 +7,7 @@ public abstract class EncryptorBase : IEncryptor
 
     protected EncryptorBase() { }
 
-    public static EncryptorBase GetEncryptor(LabType type, string key, string alphabet, int inputLen = 0)
+    public static EncryptorBase GetEncryptor(LabType type, string key, string alphabet)
     {
         switch (type)
         {
@@ -16,7 +16,7 @@ public abstract class EncryptorBase : IEncryptor
             case LabType.Lab2:
                 return new PermutationEncryptor(key, alphabet);
             case LabType.Lab3:
-                return new LinearEncryptor(inputLen);
+                return new LinearEncryptor();
             default:
                 return null;
         }
