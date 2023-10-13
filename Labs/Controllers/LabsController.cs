@@ -28,8 +28,10 @@ public class LabsController : Controller
     public IActionResult Index(InputModel model, bool IsDecryptPressed)
     {
         if (!ModelState.IsValid) return View();
-        if (model.Key != null && !Regex.IsMatch(model.Key, _labsContext.LabProperties.KeyPattern)) 
-            return Json(new { Error = "Ключ содержит недопустимые символы"});
+        if (model.Key != null && 
+            (model.Key.Length < _labsContext.LabProperties.KeyLength 
+             || !Regex.IsMatch(model.Key, _labsContext.LabProperties.KeyPattern))) 
+            return Json(new { Error = "Ключ содержит недопустимые символы или меньше необходимой длины"});
         
         var encryptor = EncryptorBase.GetEncryptor(_labsContext.LabType, model.Key, 
             _labsContext.LabProperties.Alphabet);

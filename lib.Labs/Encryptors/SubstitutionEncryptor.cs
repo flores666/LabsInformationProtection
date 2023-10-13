@@ -2,10 +2,10 @@ using System.Text;
 
 namespace lib.Labs.Encryptors;
 
-//Lab1
+//Lab 1
 public class SubstitutionEncryptor : EncryptorBase
 {
-    private readonly List<string> _keyCombinations;
+    private readonly Dictionary<string, string> _keyCombinations;
 
     public SubstitutionEncryptor(string key, string alphabet)
     {
@@ -21,10 +21,7 @@ public class SubstitutionEncryptor : EncryptorBase
         {
             Key = key;
         }
-        else
-        {
-            Key = new string(key.Substring(0, length).Distinct().ToArray());
-        }
+
         _keyCombinations = GenerateKeyCombinations(Key);
     }
 
@@ -35,16 +32,8 @@ public class SubstitutionEncryptor : EncryptorBase
         var result = new StringBuilder();
         foreach (var chunk in splitString)
         {
-            var i = int.Parse(chunk[0].ToString());
-            if (chunk.Length == 2)
-            {
-                var j = int.Parse(chunk[1].ToString());
-                result.Append(_keyCombinations[i] + _keyCombinations[j]);
-            }
-            else
-            {
-                result.Append(_keyCombinations[i]);
-            }
+            if (chunk.Length == 2) result.Append(_keyCombinations[chunk]);
+            else result.Append(_keyCombinations[chunk + "0"]);
         }
 
         return string.Join("", result);
@@ -57,7 +46,7 @@ public class SubstitutionEncryptor : EncryptorBase
 
         foreach (var chunk in splitString)
         {
-            result.Append(_keyCombinations.IndexOf(chunk));
+            result.Append(_keyCombinations.FirstOrDefault(v => v.Value == chunk).Key);
         }
 
         return result.ToString();

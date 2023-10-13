@@ -2,10 +2,11 @@ using System.Text;
 
 namespace lib.Labs.Encryptors;
 
+//Lab 2
 public class PermutationEncryptor : EncryptorBase
 {
     private int[] _key;
-    
+
     public PermutationEncryptor(string key, string alphabet)
     {
         Key = key;
@@ -16,14 +17,14 @@ public class PermutationEncryptor : EncryptorBase
     public override string Encrypt(string input)
     {
         var result = new StringBuilder();
-        var len = _key.Length;
+        var keyLength = _key.Length;
         input = FillEnding(input);
-        
-        for (int i = 0; i < input.Length; i += len)
+
+        for (int i = 0; i < input.Length; i += keyLength)
         {
-            var sub = input.Substring(i, len);
-            var enc = new char[len];
-            for (int j = 0; j < len; j++)
+            var sub = input.Substring(i, keyLength);
+            var enc = new char[keyLength];
+            for (int j = 0; j < keyLength; j++)
             {
                 enc[j] = sub[_key[j]];
             }
@@ -32,21 +33,6 @@ public class PermutationEncryptor : EncryptorBase
         }
 
         return result.ToString();
-    }
-
-    private string FillEnding(string msg)
-    {
-        var len = _key.Length;
-        var toAddLength = len - msg.Length % len;
-        if (toAddLength == 0) return msg;
-        
-        var spaces = new char[toAddLength];
-        for (int i = 0; i < toAddLength; i++)
-        {
-            spaces[i] = ALPHABET[0];
-        }
-
-        return msg + new string(spaces);
     }
 
     public override string Decrypt(string input)
@@ -62,11 +48,26 @@ public class PermutationEncryptor : EncryptorBase
             {
                 dec[j] = sub[_key[j]];
             }
-            
+
             result.Append(dec);
         }
 
         return result.ToString();
+    }
+
+    private string FillEnding(string msg)
+    {
+        var len = _key.Length;
+        var toAddLength = len - msg.Length % len;
+        if (toAddLength == 0) return msg;
+
+        var spaces = new char[toAddLength];
+        for (int i = 0; i < toAddLength; i++)
+        {
+            spaces[i] = ALPHABET[0];
+        }
+
+        return msg + new string(spaces);
     }
 
     private int[] PrepareKey()

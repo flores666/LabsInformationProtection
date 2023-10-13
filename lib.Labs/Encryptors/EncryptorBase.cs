@@ -5,8 +5,6 @@ public abstract class EncryptorBase : IEncryptor
     public string Key { get; protected set; }
     public string ALPHABET { get; protected set; }
 
-    protected EncryptorBase() { }
-
     public static EncryptorBase GetEncryptor(LabType type, string key, string alphabet)
     {
         switch (type)
@@ -24,22 +22,25 @@ public abstract class EncryptorBase : IEncryptor
 
     public abstract string Encrypt(string input);
     public abstract string Decrypt(string input);
-    
-    public List<string> GenerateKeyCombinations(string input)
-    {
-        var result = new HashSet<string>();
-        var length = input.Length;
 
+    protected Dictionary<string, string> GenerateKeyCombinations(string key)
+    {
+        var keys = new HashSet<string>();
+        var length = key.Length;
+        
         for (int i = 0; i < length; i++)
         {
             for (int j = 0; j < length; j++)
             {
-                var combination = "" + input[i] + input[j];
-                result.Add(combination);
+                var combination = "" + key[i] + key[j];
+                keys.Add(combination);
             }
         }
+        var values = keys.Shuffle();
 
-        return result.ToList();
+        return keys
+            .Zip(values, (key, value) => new {Key = key, Value = value})
+            .ToDictionary(pair => pair.Key, pair => pair.Value);
     }
 
     public bool ValidateInput(string text)
