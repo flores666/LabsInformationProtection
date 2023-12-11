@@ -34,11 +34,13 @@ public class DesEncryptor : EncryptorBase, IKeyGenerative
 
             // Получение блока данных из входной строки
             var inputBlock = new byte[blockSize];
+            int sourceIndex = Math.Max(0, inputBytes.Length - (iteration_number + 1) * blockSize);
             Array.Copy(inputBytes,
-                inputBytes.Length - (iteration_number + 1) * blockSize,
+                sourceIndex,
                 inputBlock,
                 0,
-                blockSize);
+                Math.Min(blockSize, inputBytes.Length - sourceIndex));
+
 
             // Шифрование блока данных
             var output = new byte[inputBlock.Length];
@@ -53,46 +55,55 @@ public class DesEncryptor : EncryptorBase, IKeyGenerative
         // Возвращение зашифрованной строки в виде Base64
         return Convert.ToBase64String(result);
     }
-
+    
 
     public override string Decrypt(string input)
     {
         // Преобразование входной строки из формата Base64 в массив байт
-        var inputBytes = Convert.FromBase64String(input);
-        byte[] result = null;
-        
-        var blockSize = 4 * 1024;
-        int iteration_number;
+        byte[] inputBytes = Convert.FromBase64String(input);
 
-        if (inputBytes.Length < blockSize)
-            iteration_number = 1;
-        else if (inputBytes.Length % blockSize == 0)
-            iteration_number = inputBytes.Length / blockSize;
-        else
-            iteration_number = (inputBytes.Length / blockSize) + 1;
-
-        while (iteration_number-- > 0)
+        // Создание потока для записи результата
+        using (MemoryStream ms = new MemoryStream())
         {
-            if (iteration_number == 0)
-                blockSize = inputBytes.Length % blockSize;
-
-            // Получение блока данных из входной строки
-            var inputBlock = new byte[blockSize];
-            Array.Copy(inputBytes, inputBytes.Length - (iteration_number + 1) * blockSize, inputBlock, 0, blockSize);
-
-            // Дешифрование блока данных
-            var output = new byte[inputBlock.Length];
-            for (int i = 0; i < output.Length; i++)
+            using (BinaryWriter bwr = new BinaryWriter(ms))
             {
-                output[i] = _des.Decrypt(inputBlock[i]);
+                int blocksize = 4 * 1024;
+                int iteration_number;
+
+                if (inputBytes.Length < blocksize)
+                    iteration_number = 1;
+                else if (inputBytes.Length % blocksize == 0)
+                    iteration_number = inputBytes.Length / blocksize;
+                else
+                    iteration_number = (inputBytes.Length / blocksize) + 1;
+
+                while (iteration_number-- > 0)
+                {
+                    if (iteration_number == 0)
+                        blocksize = inputBytes.Length % blocksize;
+
+                    // Получение блока данных из входной строки
+                    byte[] inputBlock = new byte[blocksize];
+                    Array.Copy(inputBytes, inputBytes.Length - (iteration_number + 1) * blocksize, inputBlock, 0, blocksize);
+
+                    // Дешифрование блока данных
+                    byte[] output = new byte[inputBlock.Length];
+                    for (int i = 0; i < output.Length; i++)
+                    {
+                        output[i] = _des.Decrypt(inputBlock[i]);
+                    }
+
+                    // Запись дешифрованного блока в результат
+                    bwr.Write(output);
+                    bwr.Flush();
+                }
+
+                // Возвращение дешифрованной строки в виде UTF-8
+                return Encoding.UTF8.GetString(ms.ToArray());
             }
-
-            result = output;
         }
-
-        // Возвращение дешифрованной строки в виде UTF-8
-        return Encoding.UTF8.GetString(result);
     }
+
     
     public string GenerateKey()
     {
