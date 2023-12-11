@@ -72,7 +72,7 @@ li {
 }
 
 .inputs,
-.buttons {
+buttons {
   padding: 0 2em 0 2em;
   background-color: var(--dark-bg-color);
   box-shadow: 10px 15px 35px 3px rgba(0, 0, 0, 0.2);
@@ -116,20 +116,27 @@ input:focus {
   height: 3em;
 }
 
-.buttons button {
-  height: 3em;
+button {
   color: var(--main-text-color);
   box-shadow: 0 0 1px #424b5370;
   background-color: #3d3d3d21;
   border-radius: 10px;
-  margin: 0 0.9em 0 0.9em;
   font-size: 22px;
   text-transform: uppercase;
 }
 
-.buttons button:hover {
+button:hover {
   background-color: #3d3d3d21;
   box-shadow: 0 0 10px #4e4e4e65;
+}
+
+.buttons button {
+  height: 3em;
+  margin: 0 0.9em 0 0.9em;
+}
+
+#generateKey {
+  border: 0;
 }
 
 /* Общие стили для контейнера .form-key и .form-input */
@@ -170,4 +177,17 @@ input:focus {
 .form-input textarea,
 .form-output textarea{
   padding: 1em;
+  overflow: auto;
+}
+
+.generate-key {
+  display: flex;
+  width: 100%;
+  justify-content: end;
+}
+
+#generateKey {
+  margin-top: 0.5em;
+  text-transform:none;
+  padding: 0.2em 0.5em 0.2em 0.5em;
 }

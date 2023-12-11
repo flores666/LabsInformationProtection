@@ -1,6 +1,6 @@
-using lib.Labs;
+using Labs;
 
-namespace Laba1;
+namespace Labs;
 
 public interface ILabsContext
 {
@@ -10,7 +10,7 @@ public interface ILabsContext
 
 public class LabsContext : ILabsContext
 {
-    public LabType LabType { get; set; }
+    public LabType LabType { get; set; } = LabType.Lab1;
 
     public LabProperties LabProperties
     {

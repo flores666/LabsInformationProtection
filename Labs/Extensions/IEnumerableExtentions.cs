@@ -1,4 +1,4 @@
-﻿namespace lib.Labs;
+﻿namespace Labs.Extensions;
 
 public static class IEnumerableExtensions
 {

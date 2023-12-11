@@ -1,4 +1,4 @@
-namespace lib.Labs.Encryptors;
+namespace Labs.Encryptors;
 
 public interface IEncryptor
 {

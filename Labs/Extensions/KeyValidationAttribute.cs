@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.Text.RegularExpressions;
 
-namespace Laba1.Extensions;
+namespace Labs.Extensions;
 
 public class KeyValidationAttribute : ValidationAttribute
 {

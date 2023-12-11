@@ -1,5 +1,4 @@
-using Laba1;
-using lib.Labs.Encryptors;
+using Labs;
 
 var builder = WebApplication.CreateBuilder(args);
 

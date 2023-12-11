@@ -1,7 +1,7 @@
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
-namespace Laba1.Models;
+namespace Labs.Models;
 
 public class InputModel
 {

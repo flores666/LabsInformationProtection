@@ -1,6 +1,7 @@
-﻿using System.Text;
+﻿using System.Diagnostics;
+using System.Text;
 
-namespace lib.Labs.Encryptors;
+namespace Labs.Encryptors;
 
 //Lab 3
 public class LinearEncryptor : EncryptorBase
@@ -16,7 +17,7 @@ public class LinearEncryptor : EncryptorBase
         var resultBytes = new List<byte>();
         var sequenceIndex = 0;
         var prevNum = _generativeNumber;
-        
+
         for (var i = 0; i < input.Length; i++)
         {
             var ch = input[i];

@@ -1,12 +1,13 @@
 using System.Text;
 
-namespace lib.Labs.Encryptors;
+namespace Labs.Encryptors;
 
 //Lab 2
-public class PermutationEncryptor : EncryptorBase
+public class PermutationEncryptor : EncryptorBase, IKeyGenerative
 {
     private int[] _key;
 
+    public PermutationEncryptor() { }
     public PermutationEncryptor(string key, string alphabet)
     {
         Key = key;
@@ -53,6 +54,22 @@ public class PermutationEncryptor : EncryptorBase
         }
 
         return result.ToString();
+    }
+
+    public string GenerateKey()
+    {
+        var rand = new Random();
+        var key = new HashSet<int>();
+        var nums = Enumerable.Range(0, 99).ToArray();
+        Data.TryGetLabProperties(LabType.Lab2, out LabProperties props);
+        var len = props.KeyLength;
+        while (key.Count != len)
+        {
+            var num = nums[rand.Next(len)];
+            key.Add(num);
+        }
+
+        return string.Join(",", key);
     }
 
     private string FillEnding(string msg)
