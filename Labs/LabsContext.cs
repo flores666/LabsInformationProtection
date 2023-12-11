@@ -1,4 +1,4 @@
-using Labs;
+using lib.Labs;
 
 namespace Labs;
 

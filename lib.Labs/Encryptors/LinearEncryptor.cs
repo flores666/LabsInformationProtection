@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics;
 using System.Text;
 
-namespace Labs.Encryptors;
+namespace lib.Labs.Encryptors;
 
 //Lab 3
 public class LinearEncryptor : EncryptorBase

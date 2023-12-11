@@ -1,10 +1,7 @@
 using System.Collections;
-using System.Collections.Specialized;
-using System.Globalization;
 using System.Text;
-using Labs.Extensions;
 
-namespace Labs.Encryptors.DES;
+namespace lib.Labs.Encryptors.DES;
 
 public class DesEncryptor : EncryptorBase, IKeyGenerative
 {

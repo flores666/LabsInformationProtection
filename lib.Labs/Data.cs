@@ -1,4 +1,4 @@
-namespace Labs;
+namespace lib.Labs;
 
 public enum LabType
 {

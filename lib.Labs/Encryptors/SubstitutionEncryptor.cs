@@ -1,7 +1,7 @@
 using System.Text;
-using Labs.Extensions;
+using lib.Labs.Extensions;
 
-namespace Labs.Encryptors;
+namespace lib.Labs.Encryptors;
 
 //Lab 1
 public class SubstitutionEncryptor : EncryptorBase, IKeyGenerative

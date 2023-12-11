@@ -1,6 +1,6 @@
 using System.Text;
 
-namespace Labs.Encryptors;
+namespace lib.Labs.Encryptors;
 
 //Lab 2
 public class PermutationEncryptor : EncryptorBase, IKeyGenerative

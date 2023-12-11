@@ -1,6 +1,6 @@
-using Labs.Encryptors.DES;
+using lib.Labs.Encryptors.DES;
 
-namespace Labs.Encryptors;
+namespace lib.Labs.Encryptors;
 
 public abstract class EncryptorBase : IEncryptor
 {
