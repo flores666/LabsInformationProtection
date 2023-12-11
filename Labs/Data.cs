@@ -1,4 +1,4 @@
-namespace lib.Labs;
+namespace Labs;
 
 public enum LabType
 {
@@ -37,7 +37,8 @@ public static class Data
     {
         [LabType.Lab1] = () => new("Метод подстановки", "012345", 2, "[0-5]"),
         [LabType.Lab2] = () => new("Метод перестановки", "012345ABCDEF", 16, "[0-9,]"),
-        [LabType.Lab3] = () => new("Линейное шифрование (гаммирование)", "[ -~]", 0, ""),
+        [LabType.Lab3] = () => new("Линейное шифрование (гаммирование)", "", 0, ""),
+        [LabType.Lab4] = () => new("Классический криптографический алгоритм DES", "", 0, "[01]{10}$"),
     };
 
     public static bool TryGetLabProperties(LabType lab, out LabProperties props)
@@ -48,7 +49,7 @@ public static class Data
             return true;
         }
 
-        props = null;
+        props = default;
         return false;
     }
 }

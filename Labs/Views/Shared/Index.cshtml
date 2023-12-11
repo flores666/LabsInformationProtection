@@ -32,7 +32,7 @@ $(document).ready(function() {
         $('#encrypt, #decrypt').click(function () {
             let input;
             let key = $('#key').val();
-            
+
             if (this.id == 'decrypt') {
                 input = document.getElementById('output').value;
                 isDecryptPressed = true;
@@ -42,7 +42,7 @@ $(document).ready(function() {
                 input = document.getElementById('input').value;
                 isDecryptPressed = false;
             }
-
+            
             $.ajax({
                 url: "/@ViewContext.RouteData.Values["Controller"]/Index",
                 type: "POST",
@@ -66,46 +66,66 @@ $(document).ready(function() {
         if ('@string.IsNullOrEmpty(labsContext.LabProperties.KeyPattern)' === 'True') {
             $('#key').prop('disabled', true);
         }
+
+        $('#generateKey').click(function () {
+            $.ajax({
+                url: "/@ViewContext.RouteData.Values["Controller"]/GenerateKey",
+                type: "POST",
+                success: function (key) {
+                    if($('#key').value != null) $('#key').value.clear();
+                    document.getElementById('key').value = key;
+                }
+            });
+        });
     });
 </script>
 
 <div class="container">
-        <div class="header">
-            <h1>@ViewData["Header"]</h1>
-        </div>
-        <form class="form">
-            <span id="shared-span" class="text-danger d-flex start-0 pb-1"></span>
-
-            <div class="inputs">
-                <div class="form-key">
-                    <input id="key" asp-for="Key" autocomplete="off">
-                    <label asp-for="Key"></label>
-                    <span asp-validation-for="Key" class="text-danger"></span>
-                </div>
-                
-                <div class="row pb-4 pt-3">
-                    <div class="form-input col">
-                        <textarea rows="6" id="input" asp-for="Input"></textarea>
-                        <label asp-for="Input"></label>
-                        <span id="input-span" asp-validation-for="Input" class="text-danger"></span>
-                    </div>
-
-                    <div class="form-output col">
-                        <textarea rows="6" id="output" asp-for="Output" disabled></textarea>
-                        <label asp-for="Output"></label>
-                    </div>
-                </div>
-            </div>
-
-            <div class="buttons">
-                <div class="row">
-                    <button type="button" class="col border-0" id="encrypt">Зашифровать</button>
-                    <button type="button" class="col border-0" id="decrypt" disabled>Расшифровать</button>
-                    <button type="button" class="col-1 border-0" id="clear"><img src="assets/trash.svg" alt="X"></button>
-                </div>
-            </div>
-        </form>
+    <div class="header">
+        <h1>@ViewData["Header"]</h1>
     </div>
+    <form class="form">
+        <span id="shared-span" class="text-danger d-flex start-0 pb-1"></span>
+
+        <div class="inputs">
+            <div class="form-key">
+                <input id="key" asp-for="Key" autocomplete="off">
+                <label asp-for="Key"></label>
+                <span asp-validation-for="Key" class="text-danger"></span>
+            </div>
+
+            @if (ViewBag.CanGenerateKey == true)
+            {
+                <div class="generate-key">
+                    <button type="button" id="generateKey">Сгенерировать Ключ</button>
+                </div>
+            }
+
+            <div class="row pb-4 pt-3">
+                <div class="form-input col">
+                    <textarea rows="6" id="input" asp-for="Input"></textarea>
+                    <label asp-for="Input"></label>
+                    <span id="input-span" asp-validation-for="Input" class="text-danger"></span>
+                </div>
+
+                <div class="form-output col">
+                    <textarea rows="6" id="output" asp-for="Output" disabled></textarea>
+                    <label asp-for="Output"></label>
+                </div>
+            </div>
+        </div>
+
+        <div class="buttons">
+            <div class="row">
+                <button type="button" class="col border-0" id="encrypt">Зашифровать</button>
+                <button type="button" class="col border-0" id="decrypt" disabled>Расшифровать</button>
+                <button type="button" class="col-1 border-0" id="clear">
+                    <img src="assets/trash.svg" alt="X">
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial"/>
