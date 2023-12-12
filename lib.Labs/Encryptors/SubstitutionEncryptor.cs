@@ -8,7 +8,10 @@ public class SubstitutionEncryptor : EncryptorBase, IKeyGenerative
 {
     private readonly Dictionary<string, string> _keyCombinations;
 
-    public SubstitutionEncryptor() { }
+    public SubstitutionEncryptor()
+    {
+    }
+
     public SubstitutionEncryptor(string key, string alphabet)
     {
         ALPHABET = alphabet;
@@ -30,26 +33,31 @@ public class SubstitutionEncryptor : EncryptorBase, IKeyGenerative
 
     public override string Encrypt(string text)
     {
-        var splitString = SplitString(text, 2);
+        if (text.Length % 2 == 1) text += '0';
 
-        var result = new StringBuilder();
-        foreach (var chunk in splitString)
+        var result = new StringBuilder(text.Length);
+
+        for (int i = 0; i < text.Length; i += 2)
         {
-            if (chunk.Length == 2) result.Append(_keyCombinations[chunk]);
-            else result.Append(_keyCombinations[chunk + "0"]);
+            var chunk = new string(new char[] { text[i], text[i + 1] });
+            result.Append(_keyCombinations[chunk]);
         }
 
-        return string.Join("", result);
+        return result.ToString();
     }
 
     public override string Decrypt(string text)
     {
-        var splitString = SplitString(text, 2);
-        var result = new StringBuilder();
+        if (text.Length % 2 == 1) text += '0';
 
-        foreach (var chunk in splitString)
+        var newDic = _keyCombinations
+            .ToDictionary(p => p.Value, p => p.Key);
+        var result = new StringBuilder(text.Length);
+
+        for (int i = 0; i < text.Length; i += 2)
         {
-            result.Append(_keyCombinations.FirstOrDefault(v => v.Value == chunk).Key);
+            var chunk = new string(new char[] { text[i], text[i + 1] });
+            result.Append(newDic[chunk]);
         }
 
         return result.ToString();
@@ -66,25 +74,8 @@ public class SubstitutionEncryptor : EncryptorBase, IKeyGenerative
             var ch = nums[rand.Next(nums.Length)];
             key.Add(ch);
         }
-        
+
         return string.Join("", GenerateKeyCombinations(string.Join("", key)));
-    }
-
-    private static List<string> SplitString(string input, int chunkSize)
-    {
-        int length = input.Length;
-        int numOfChunks = (length + chunkSize - 1) / chunkSize;
-
-        var chunks = new List<string>();
-
-        for (int i = 0; i < numOfChunks; i++)
-        {
-            int startIndex = i * chunkSize;
-            int endIndex = Math.Min(startIndex + chunkSize, length);
-            chunks.Add(input.Substring(startIndex, endIndex - startIndex));
-        }
-
-        return chunks;
     }
 
     private static Dictionary<string, string> GenerateKeyCombinations(string key)
