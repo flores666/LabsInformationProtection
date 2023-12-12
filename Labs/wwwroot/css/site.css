@@ -191,3 +191,9 @@ button:hover {
   text-transform:none;
   padding: 0.2em 0.5em 0.2em 0.5em;
 }
+
+textarea {
+  resize: none;
+  max-height: 45vh;
+  overflow-y: auto;
+}
