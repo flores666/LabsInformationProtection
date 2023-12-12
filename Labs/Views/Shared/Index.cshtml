@@ -77,7 +77,18 @@ $(document).ready(function() {
                 }
             });
         });
-    });
+        
+        $('.auto-height').on('input', function() {
+              autoResizeTextarea(this);
+            });
+        
+            function autoResizeTextarea(textarea) {
+               $('.auto-height').each(function () {
+                   this.style.height = 'auto';
+                   this.style.height = (textarea.scrollHeight) + 'px';
+               });
+            }
+        });
 </script>
 
 <div class="container">
@@ -103,13 +114,13 @@ $(document).ready(function() {
 
             <div class="row pb-4 pt-3">
                 <div class="form-input col">
-                    <textarea rows="6" id="input" asp-for="Input"></textarea>
+                    <textarea rows="6" id="input" class="auto-height" asp-for="Input"></textarea>
                     <label asp-for="Input"></label>
                     <span id="input-span" asp-validation-for="Input" class="text-danger"></span>
                 </div>
 
                 <div class="form-output col">
-                    <textarea rows="6" id="output" asp-for="Output" disabled></textarea>
+                    <textarea rows="6" id="output" class="auto-height" asp-for="Output" disabled></textarea>
                     <label asp-for="Output"></label>
                 </div>
             </div>
