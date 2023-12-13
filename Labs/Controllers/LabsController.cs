@@ -3,6 +3,7 @@ using Labs.Models;
 using lib.Labs;
 using Microsoft.AspNetCore.Mvc;
 using lib.Labs.Encryptors;
+using lib.Labs.Encryptors.Interfaces;
 
 namespace Labs.Controllers;
 

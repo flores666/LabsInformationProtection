@@ -1,4 +1,4 @@
-namespace lib.Labs.Encryptors;
+namespace lib.Labs.Encryptors.Interfaces;
 
 public interface IKeyGenerative
 {

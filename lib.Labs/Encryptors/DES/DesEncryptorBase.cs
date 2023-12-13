@@ -1,13 +1,13 @@
-using System.Collections;
 using System.Text;
+using lib.Labs.Encryptors.Interfaces;
 
 namespace lib.Labs.Encryptors.DES;
 
-public class DesEncryptor : EncryptorBase, IKeyGenerative
+public class DesEncryptorBase : EncryptorBase, IKeyGenerative
 {
-    private readonly DesAlgorithm _des;
+    protected readonly DesAlgorithm _des;
 
-    public DesEncryptor(string key)
+    public DesEncryptorBase(string key)
     {
         _des = new DesAlgorithm(key);
     }

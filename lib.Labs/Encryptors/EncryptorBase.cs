@@ -1,4 +1,5 @@
 using lib.Labs.Encryptors.DES;
+using lib.Labs.Encryptors.Interfaces;
 
 namespace lib.Labs.Encryptors;
 
@@ -15,7 +16,8 @@ public abstract class EncryptorBase : IEncryptor
             LabType.Lab1 => isEmpty ? new SubstitutionEncryptor() : new SubstitutionEncryptor(key, alphabet),
             LabType.Lab2 => isEmpty ? new PermutationEncryptor() : new PermutationEncryptor(key, alphabet),
             LabType.Lab3 => new LinearEncryptor(),
-            LabType.Lab4 => new DesEncryptor(key),
+            LabType.Lab4 => new DesEncryptorBase(key),
+            LabType.Lab5 => new DesCbcEncryptor(key),
             _ => null
         };
     }

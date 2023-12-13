@@ -1,4 +1,5 @@
 using System.Text;
+using lib.Labs.Encryptors.Interfaces;
 using lib.Labs.Extensions;
 
 namespace lib.Labs.Encryptors;
