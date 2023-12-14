@@ -1,5 +1,4 @@
 using System.Text;
-using lib.Labs.Encryptors.DES;
 
 namespace lib.Labs.Encryptors;
 
@@ -28,6 +27,9 @@ public class DesCbcEncryptor : DesEncryptorBase
 
         // Задаем IV перед началом цикла
         _iv = GenerateIV(blockSize);
+
+        var path = Path.Combine(Path.GetTempPath(), "iv");
+        WriteIVIntoFile(_iv, path);
 
         while (iteration_number-- > 0)
         {
@@ -78,7 +80,9 @@ public class DesCbcEncryptor : DesEncryptorBase
             iteration_number = (encryptedBytes.Length / blockSize) + 1;
 
         // Задаем IV перед началом цикла
-        _iv = GenerateIV(blockSize);
+        var path = Path.Combine(Path.GetTempPath(), "iv");
+        _iv = GetIVFromFile(path);
+        if (File.Exists(path)) File.Delete(path);
 
         while (iteration_number-- > 0)
         {
@@ -110,7 +114,6 @@ public class DesCbcEncryptor : DesEncryptorBase
         return Encoding.UTF8.GetString(result.ToArray());
     }
 
-
     /// <summary>
     /// "вектор инициализации" (IV) для следующего блока данных. 
     /// </summary>
@@ -121,12 +124,30 @@ public class DesCbcEncryptor : DesEncryptorBase
         // Генерируем случайный IV длиной в blockSize байт
         var iv = new byte[blockSize];
         // Здесь нужно использовать надежный механизм генерации случайных чисел
-        // Например, можно воспользоваться классом RNGCryptoServiceProvider
         using (var rng = new System.Security.Cryptography.RNGCryptoServiceProvider())
         {
             rng.GetBytes(iv);
         }
 
         return iv;
+    }
+
+    private byte[] GetIVFromFile(string path)
+    {
+        using var sr = new StreamReader(path);
+        var res = sr.ReadToEnd().Split(' ').Select(s => s != "" ? byte.Parse(s) : default).ToArray();
+        sr.Close();
+        return res;
+    }
+    
+    private void WriteIVIntoFile(byte[] iv, string path)
+    {
+        using var sw = new StreamWriter(path);
+        foreach (var b in iv)
+        {
+            sw.Write(b + " ");
+        }
+
+        sw.Close();
     }
 }

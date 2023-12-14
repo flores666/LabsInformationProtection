@@ -1,4 +1,3 @@
-using lib.Labs.Encryptors.DES;
 using lib.Labs.Encryptors.Interfaces;
 
 namespace lib.Labs.Encryptors;

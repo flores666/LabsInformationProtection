@@ -1,7 +1,7 @@
 using System.Text;
 using lib.Labs.Encryptors.Interfaces;
 
-namespace lib.Labs.Encryptors.DES;
+namespace lib.Labs.Encryptors;
 
 public class DesEncryptorBase : EncryptorBase, IKeyGenerative
 {
