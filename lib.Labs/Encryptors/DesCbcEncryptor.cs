@@ -4,7 +4,8 @@ namespace lib.Labs.Encryptors;
 
 /// <summary>
 /// Режим шифрования Cipher Block Chaining (CBC) включает в себя использование предыдущего зашифрованного блока как
-/// "вектора инициализации" (IV) для следующего блока данных. 
+/// "вектора инициализации" (IV) для следующего блока данных.
+/// Лаб 5
 /// </summary>
 public class DesCbcEncryptor : DesEncryptorBase
 {

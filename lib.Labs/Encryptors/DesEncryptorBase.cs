@@ -4,7 +4,8 @@ using lib.Labs.Encryptors.Interfaces;
 namespace lib.Labs.Encryptors;
 
 /// <summary>
-/// Симметричный алгоритм блочного шифрования. 
+/// Симметричный алгоритм блочного шифрования.
+/// Лаб 4
 /// </summary>
 public class DesEncryptorBase : EncryptorBase, IKeyGenerative
 {
