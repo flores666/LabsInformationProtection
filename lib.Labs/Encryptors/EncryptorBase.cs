@@ -18,6 +18,7 @@ public abstract class EncryptorBase : IEncryptor
             LabType.Lab4 => new DesEncryptorBase(key),
             LabType.Lab5 => new DesCbcEncryptor(key),
             LabType.Lab6 => new DesCfbEncryptor(key),
+            LabType.Lab7 => new DesOfbEncryptor(key),
             _ => null
         };
     }
