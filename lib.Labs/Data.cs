@@ -40,6 +40,7 @@ public static class Data
         [LabType.Lab3] = () => new("Линейное шифрование (гаммирование)", "", 0, ""),
         [LabType.Lab4] = () => new("Классический криптографический алгоритм DES", "", 0, "[01]{10}$"),
         [LabType.Lab5] = () => new("Работа алгоритма DES в режиме CBC", "", 0, "[01]{10}$"),
+        [LabType.Lab6] = () => new("Работа алгоритма DES в режиме CFB", "", 0, "[01]{10}$"),
     };
 
     public static bool TryGetLabProperties(LabType lab, out LabProperties props)

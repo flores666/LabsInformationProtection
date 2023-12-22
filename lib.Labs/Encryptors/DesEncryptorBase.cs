@@ -3,6 +3,9 @@ using lib.Labs.Encryptors.Interfaces;
 
 namespace lib.Labs.Encryptors;
 
+/// <summary>
+/// Симметричный алгоритм блочного шифрования. 
+/// </summary>
 public class DesEncryptorBase : EncryptorBase, IKeyGenerative
 {
     protected readonly DesAlgorithm _des;

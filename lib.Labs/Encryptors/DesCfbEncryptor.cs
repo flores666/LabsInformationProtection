@@ -3,14 +3,14 @@ using System.Text;
 namespace lib.Labs.Encryptors;
 
 /// <summary>
-/// Режим шифрования Cipher Block Chaining (CBC) включает в себя использование предыдущего зашифрованного блока как
-/// "вектора инициализации" (IV) для следующего блока данных. 
+/// Режим обратной связи по шифрованному блоку (CFB) включает использование предыдущего зашифрованного блока
+/// для обратной связи при шифровании следующего блока данных. 
 /// </summary>
-public class DesCbcEncryptor : DesEncryptorBase
+public class DesCfbEncryptor : DesEncryptorBase
 {
-    private byte[] _iv;
+    private byte[] _feedback;
 
-    public DesCbcEncryptor(string key) : base(key)
+    public DesCfbEncryptor(string key) : base(key)
     {
     }
 
@@ -29,11 +29,10 @@ public class DesCbcEncryptor : DesEncryptorBase
         else
             iteration_number = (inputBytes.Length / blockSize) + 1;
 
-        // Задаем IV перед началом цикла
-        _iv = GenerateIV(blockSize);
-
-        var path = Path.Combine(Path.GetTempPath(), "iv");
-        WriteIVIntoFile(_iv, path);
+        // Задаем feedback перед началом цикла
+        var path = Path.Combine(Path.GetTempPath(), "feedback");
+        _feedback = GenerateIV(blockSize);
+        WriteIVIntoFile(_feedback, path);
 
         while (iteration_number-- > 0)
         {
@@ -47,22 +46,31 @@ public class DesCbcEncryptor : DesEncryptorBase
                 0,
                 blockSize);
 
-            // XOR с предыдущим зашифрованным блоком (или IV для первого блока)
+            // Шифрование обратной связи
+            var feedbackEncrypted = new byte[_feedback.Length];
+            for (int i = 0; i < feedbackEncrypted.Length; i++)
+            {
+                feedbackEncrypted[i] = _des.Encrypt(_feedback[i]);
+            }
+
+            // XOR с блоком данных
             for (int i = 0; i < blockSize; i++)
             {
-                inputBlock[i] ^= _iv[i];
+                inputBlock[i] ^= feedbackEncrypted[i];
             }
 
             // Шифрование блока данных
-            var output = new byte[inputBlock.Length];
-            for (int i = 0; i < output.Length; i++)
+            var encryptedBlock = new byte[inputBlock.Length];
+            for (int i = 0; i < encryptedBlock.Length; i++)
             {
-                output[i] = _des.Encrypt(inputBlock[i]);
-                result.Add(output[i]);
+                encryptedBlock[i] = _des.Encrypt(inputBlock[i]);
             }
 
-            // Сохраняем текущий зашифрованный блок в IV для следующей итерации
-            _iv = output;
+            // Сохраняем текущий зашифрованный блок в feedback для следующей итерации
+            _feedback = encryptedBlock;
+
+            // Объединяем результаты текущей итерации
+            result = result == null ? encryptedBlock.ToList() : result.Concat(encryptedBlock).ToList();
         }
 
         return Convert.ToBase64String(result.ToArray());
@@ -70,8 +78,8 @@ public class DesCbcEncryptor : DesEncryptorBase
 
     public override string Decrypt(string input)
     {
-        var encryptedBytes = Convert.FromBase64String(input);
-        var result = new List<byte>();
+        var encryptedBytes = Encoding.UTF8.GetBytes(input);
+        byte[] result = null;
 
         var blockSize = 4 * 1024;
         int iteration_number;
@@ -83,10 +91,10 @@ public class DesCbcEncryptor : DesEncryptorBase
         else
             iteration_number = (encryptedBytes.Length / blockSize) + 1;
 
-        // Задаем IV перед началом цикла
-        var path = Path.Combine(Path.GetTempPath(), "iv");
-        _iv = GetIVFromFile(path);
-        if (File.Exists(path)) File.Delete(path);
+        // Задаем feedback перед началом цикла
+        var path = Path.Combine(Path.GetTempPath(), "feedback");
+        _feedback = GetIVFromFile(path);
+        if(File.Exists(path)) File.Delete(path);
 
         while (iteration_number-- > 0)
         {
@@ -100,22 +108,35 @@ public class DesCbcEncryptor : DesEncryptorBase
                 0,
                 blockSize);
 
-            // Расшифрование блока данных
+            // Шифрование обратной связи
+            var feedbackEncrypted = new byte[_feedback.Length];
+            for (int i = 0; i < feedbackEncrypted.Length; i++)
+            {
+                feedbackEncrypted[i] = _des.Encrypt(_feedback[i]);
+            }
+
+            // XOR с зашифрованным блоком данных
+            for (int i = 0; i < blockSize; i++)
+            {
+                encryptedBlock[i] ^= feedbackEncrypted[i];
+            }
+
+            // Шифрование предыдущего зашифрованного блока (или feedback)
             var decryptedBlock = new byte[encryptedBlock.Length];
             for (int i = 0; i < decryptedBlock.Length; i++)
             {
-                decryptedBlock[i] = _des.Decrypt(encryptedBlock[i]);
-                // XOR с предыдущим зашифрованным блоком (или IV для первого блока)
-                decryptedBlock[i] ^= _iv[i];
-                result.Add(decryptedBlock[i]);
+                decryptedBlock[i] = _des.Encrypt(encryptedBlock[i]);
             }
 
-            // Сохраняем текущий расшифрованный блок в IV для следующей итерации
-            _iv = encryptedBlock;
+            // Сохраняем текущий зашифрованный блок в feedback для следующей итерации
+            _feedback = encryptedBlock;
+
+            // Объединяем результаты текущей итерации
+            result = result == null ? decryptedBlock : result.Concat(decryptedBlock).ToArray();
         }
 
         // Преобразуем результат в строку UTF-8
-        return Encoding.UTF8.GetString(result.ToArray());
+        return Convert.ToBase64String(result);
     }
 
     /// <summary>
