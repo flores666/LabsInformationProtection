@@ -11,6 +11,9 @@ public class InputModel
     
     [DisplayName("Ключ")]
     public string? Key { get; set; }
+
+    [DisplayName("Контейнер")]
+    public string? Container { get; set; }
     
     [DisplayName("Вывод")]
     public string? Output { get; set; }

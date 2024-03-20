@@ -23,7 +23,10 @@ public class LabsController : Controller
         _labsContext.LabType =
             Enum.Parse<LabType>(GetQueryStringValue(Request.QueryString.Value, "type") ?? LabType.Lab1.ToString());
         ViewData["Header"] = _labsContext.LabProperties.Name.ToUpper();
-        ViewBag.CanGenerateKey = EncryptorBase.GetEncryptor(_labsContext.LabType) is IKeyGenerative;
+        var encryptor = EncryptorBase.GetEncryptor(_labsContext.LabType);
+        ViewBag.CanGenerateKey = encryptor is IKeyGenerative;
+        ViewBag.IsSteganography = encryptor is ISteganography;
+        
         return View();
     }
 
@@ -45,6 +48,8 @@ public class LabsController : Controller
 
         if (!encryptor.ValidateInput(model.Input)) return Json(new { Error = "Ввод не соответствует алфавиту" });
 
+        if (encryptor is ISteganography steganography) steganography.Container = model.Container;
+        
         model.Output = IsDecryptPressed ? encryptor.Decrypt(model.Input) : encryptor.Encrypt(model.Input);
         return Json(model);
     }

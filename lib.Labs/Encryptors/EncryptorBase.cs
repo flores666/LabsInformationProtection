@@ -19,6 +19,8 @@ public abstract class EncryptorBase : IEncryptor
             LabType.Lab5 => new DesCbcEncryptor(key),
             LabType.Lab6 => new DesCfbEncryptor(key),
             LabType.Lab7 => new DesOfbEncryptor(key),
+            LabType.Lab8 => new ChangingIntervalEncryptor(),
+            LabType.Lab9 => new ChangingNumberOfSpacesEncryptor(),
             _ => null
         };
     }

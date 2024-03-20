@@ -1,3 +1,4 @@
+@using lib.Labs.Encryptors.Interfaces
 @model InputModel
 
 @{
@@ -32,7 +33,8 @@ $(document).ready(function() {
         $('#encrypt, #decrypt').click(function () {
             let input;
             let key = $('#key').val();
-
+            let container = $('#container').val();
+            
             if (this.id == 'decrypt') {
                 input = document.getElementById('output').value;
                 isDecryptPressed = true;
@@ -47,7 +49,7 @@ $(document).ready(function() {
                 url: "/@ViewContext.RouteData.Values["Controller"]/Index",
                 type: "POST",
                 data: { 
-                    model : { Input : input, Key : key },
+                    model : { Input : input, Key : key, Container : container },
                     IsDecryptPressed : isDecryptPressed
                 },
                 dataType: "json",
@@ -63,9 +65,19 @@ $(document).ready(function() {
                 }
             });
         });
+        
         if ('@string.IsNullOrEmpty(labsContext.LabProperties.KeyPattern)' === 'True') {
             $('#key').prop('disabled', true);
         }
+        
+        $('#container').val("Этот контейнер состоит из нескольких предложений. " +
+         "Здесь мы можем увидеть, как каждое предложение заканчивается точкой. " +
+          "Это третье предложение, за которым следует восклицательный знак! " +
+          "И еще одно предложение, оканчивающееся вопросительным знаком? " +
+          "Еще одно предложение чтобы размер контейнера был побольше. " +
+          "Напоминаю! Все! Абсолютно все предложения заканчиваются знаками препинания! " +
+          "Либо точка, либо восклицательный, либо вопросительный знак. " +
+         "Наконец, последнее предложение. Конец!");
 
         $('#generateKey').click(function () {
             $.ajax({
@@ -109,6 +121,17 @@ $(document).ready(function() {
             {
                 <div class="generate-key">
                     <button type="button" id="generateKey">Сгенерировать Ключ</button>
+                </div>
+            }
+
+            @if (ViewBag.IsSteganography)
+            {
+                <div class="pt-3">
+                    <div class="form-input col">
+                        <textarea rows="6" class="auto-height" id="container" asp-for="Container"></textarea>
+                        <label asp-for="Container"></label>
+                        <span asp-validation-for="Container" class="text-danger"></span>
+                    </div>
                 </div>
             }
 

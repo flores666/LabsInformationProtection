@@ -42,6 +42,8 @@ public static class Data
         [LabType.Lab5] = () => new("Работа алгоритма DES в режиме CBC", "", 0, "[01]{10}$"),
         [LabType.Lab6] = () => new("Работа алгоритма DES в режиме CFB", "", 0, "[01]{10}$"),
         [LabType.Lab7] = () => new("Работа алгоритма DES в режиме OFB", "", 0, "[01]{10}$"),
+        [LabType.Lab8] = () => new("Метод изменения интервалов между предложениями", "", 0, ""),
+        [LabType.Lab9] = () => new("Метод изменения количества пробелов в конце текстовых строк", "", 0, ""),
     };
 
     public static bool TryGetLabProperties(LabType lab, out LabProperties props)
