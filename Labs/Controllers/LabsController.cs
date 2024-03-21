@@ -26,6 +26,7 @@ public class LabsController : Controller
         var encryptor = EncryptorBase.GetEncryptor(_labsContext.LabType);
         ViewBag.CanGenerateKey = encryptor is IKeyGenerative;
         ViewBag.IsSteganography = encryptor is ISteganography;
+        ViewBag.IsSteganographyBits = encryptor is ISteganographyBits;
         
         return View();
     }
@@ -49,6 +50,7 @@ public class LabsController : Controller
         if (!encryptor.ValidateInput(model.Input)) return Json(new { Error = "Ввод не соответствует алфавиту" });
 
         if (encryptor is ISteganography steganography) steganography.Container = model.Container;
+        if (encryptor is ISteganographyBits steganographyBits) steganographyBits.BitsNumber = model.Bits ?? 2;
         
         model.Output = IsDecryptPressed ? encryptor.Decrypt(model.Input) : encryptor.Encrypt(model.Input);
         return Json(model);

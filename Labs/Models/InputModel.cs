@@ -17,4 +17,7 @@ public class InputModel
     
     [DisplayName("Вывод")]
     public string? Output { get; set; }
+
+    [DisplayName("Количество бит на строку")]
+    public int? Bits { get; set; }
 }

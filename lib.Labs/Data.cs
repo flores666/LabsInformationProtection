@@ -10,7 +10,8 @@ public enum LabType
     Lab6,
     Lab7,
     Lab8,
-    Lab9
+    Lab91,
+    Lab92
 }
 
 public class LabProperties
@@ -43,7 +44,8 @@ public static class Data
         [LabType.Lab6] = () => new("Работа алгоритма DES в режиме CFB", "", 0, "[01]{10}$"),
         [LabType.Lab7] = () => new("Работа алгоритма DES в режиме OFB", "", 0, "[01]{10}$"),
         [LabType.Lab8] = () => new("Метод изменения интервалов между предложениями", "", 0, ""),
-        [LabType.Lab9] = () => new("Метод изменения количества пробелов в конце текстовых строк", "", 0, ""),
+        [LabType.Lab91] = () => new("Метод изменения количества пробелов в конце текстовых строк", "", 0, ""),
+        [LabType.Lab92] = () => new("Метод изменения количества пробелов в конце текстовых строк", "", 0, ""),
     };
 
     public static bool TryGetLabProperties(LabType lab, out LabProperties props)

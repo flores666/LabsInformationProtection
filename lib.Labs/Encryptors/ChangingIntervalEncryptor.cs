@@ -20,7 +20,6 @@ public class ChangingIntervalEncryptor : EncryptorBase, ISteganography
         return container;
     }
 
-    // Метод для шифрования (прямое стеганографическое преобразование)
     public override string Encrypt(string message)
     {
         Container = PreprocessContainer(Container);
@@ -61,7 +60,6 @@ public class ChangingIntervalEncryptor : EncryptorBase, ISteganography
         return stegoContainer.ToString();
     }
 
-    // Метод для дешифрования (обратное стеганографическое преобразование)
     public override string Decrypt(string container)
     {
         var messageBuilder = new StringBuilder();
