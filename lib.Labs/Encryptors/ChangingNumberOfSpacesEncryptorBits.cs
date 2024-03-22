@@ -10,6 +10,11 @@ public class ChangingNumberOfSpacesEncryptorBits : EncryptorBase, ISteganography
 
     public override string Encrypt(string input)
     {
+        if (!LengthEnough(Container, input.Length * 16))
+        {
+            return "Не хватает длины контейнера, увеличьте его";
+        }
+        
         var result = new StringBuilder(Container.Length + input.Length * 2);
 
         int k = 0;
@@ -82,5 +87,17 @@ public class ChangingNumberOfSpacesEncryptorBits : EncryptorBase, ISteganography
         }
 
         return new string(encodedChars);
+    }
+
+    private bool LengthEnough(string container, int inputLength)
+    {
+        var counter = 0;
+        foreach (var c in container)
+        {
+            if (c == '\n') counter++;
+            if (inputLength == counter) return true;
+        }
+
+        return false;
     }
 }

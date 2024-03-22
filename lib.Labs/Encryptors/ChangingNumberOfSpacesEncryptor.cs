@@ -7,16 +7,21 @@ public class ChangingNumberOfSpacesEncryptor : EncryptorBase, ISteganography
 {
     public string Container { get; set; }
 
-    public override string Encrypt(string toEncrypt)
+    public override string Encrypt(string input)
     {
-        var result = new StringBuilder(Container.Length + toEncrypt.Length * 2);
+        if (!LengthEnough(Container, input.Length * 16))
+        {
+            return "Не хватает длины контейнера, увеличьте его";
+        }
+        
+        var result = new StringBuilder(Container.Length + input.Length * 2);
 
         int k = 0;
-        for (int i = 0, j = 0; i < toEncrypt.Length;)
+        for (int i = 0, j = 0; i < input.Length;)
         {
             if (Container[k] == '\n')
             {
-                bool isZeroBit = (toEncrypt[i] & ((char)1 << 15 - j)) == 0;
+                bool isZeroBit = (input[i] & ((char)1 << 15 - j)) == 0;
                 if (isZeroBit) result.Append("  ");
                 else result.Append(' ');
 
@@ -38,16 +43,16 @@ public class ChangingNumberOfSpacesEncryptor : EncryptorBase, ISteganography
         return result.ToString();
     }
 
-    public override string Decrypt(string toDecrypt)
+    public override string Decrypt(string input)
     {
         var encodedBits = new List<byte>(16);
 
-        for (int i = 0; i < toDecrypt.Length; i++)
+        for (int i = 0; i < input.Length; i++)
         {
-            if (toDecrypt[i] == '\n')
+            if (input[i] == '\n')
             {
                 // Проверяем, что индекс не выходит за пределы массива
-                if (i >= 2 && toDecrypt[i - 2] == ' ') encodedBits.Add(0);
+                if (i >= 2 && input[i - 2] == ' ') encodedBits.Add(0);
                 else encodedBits.Add(1);
             }
         }
@@ -65,5 +70,17 @@ public class ChangingNumberOfSpacesEncryptor : EncryptorBase, ISteganography
         }
 
         return new string(encodedChars);
+    }
+    
+    private bool LengthEnough(string container, int inputLength)
+    {
+        var counter = 0;
+        foreach (var c in container)
+        {
+            if (c == '\n') counter++;
+            if (inputLength == counter) return true;
+        }
+
+        return false;
     }
 }
