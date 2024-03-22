@@ -5,6 +5,7 @@ namespace lib.Labs.Encryptors;
 
 public class ChangingNumberOfSpacesEncryptor : EncryptorBase, ISteganography
 {
+    private const char END_MARKER = '@'; // Маркер окончания сообщения
     public string Container { get; set; }
 
     public override string Encrypt(string input)
@@ -13,63 +14,62 @@ public class ChangingNumberOfSpacesEncryptor : EncryptorBase, ISteganography
         {
             return "Не хватает длины контейнера, увеличьте его";
         }
-        
-        var result = new StringBuilder(Container.Length + input.Length * 2);
 
-        int k = 0;
-        for (int i = 0, j = 0; i < input.Length;)
+        // Преобразование сообщения в бинарный формат
+        var binaryMessage = new StringBuilder();
+        foreach (char c in input)
         {
-            if (Container[k] == '\n')
-            {
-                bool isZeroBit = (input[i] & ((char)1 << 15 - j)) == 0;
-                if (isZeroBit) result.Append("  ");
-                else result.Append(' ');
-
-                j++;
-
-                if (j == 16)
-                {
-                    j = 0;
-                    i++;
-                }
-            }
-
-            result.Append(Container[k]);
-            k++;
+            binaryMessage.Append(Convert.ToString(c, 2).PadLeft(16, '0'));
         }
 
-        result.Append(Container[k..]);
+        // Размещение сообщения в контейнере
+        var stegoContainer = new StringBuilder();
+        var binaryMessageIndex = 0;
+        var symbolIndex = 0;
 
-        return result.ToString();
+        foreach (char ch in Container)
+        {
+            if (ch == '\n')
+            {
+                var numSpaces = binaryMessage[binaryMessageIndex++] == '1' ? 1 : 2;
+                stegoContainer.Append(' ', numSpaces);
+                stegoContainer.Append(ch);
+                
+                if (binaryMessageIndex == binaryMessage.Length)
+                {
+                    stegoContainer.Append(END_MARKER);
+                    stegoContainer.Append(Container.AsSpan(symbolIndex, Container.Length - symbolIndex));
+                    break;
+                }
+            }
+            else
+            {
+                stegoContainer.Append(ch);
+            }
+
+            symbolIndex++;
+        }
+
+        return stegoContainer.ToString();
     }
 
     public override string Decrypt(string input)
     {
-        var encodedBits = new List<byte>(16);
-
+        var encodedBits = new StringBuilder();
+        var index = 0;
+        
         for (int i = 0; i < input.Length; i++)
         {
+            if (input[i] == END_MARKER) break;
             if (input[i] == '\n')
             {
-                // Проверяем, что индекс не выходит за пределы массива
-                if (i >= 2 && input[i - 2] == ' ') encodedBits.Add(0);
-                else encodedBits.Add(1);
+                if (i >= 2 && input[i - 2] == ' ') encodedBits.Append('0');
+                else encodedBits.Append('1');
+                if (++index % 16 == 0) encodedBits.Append(' ');
             }
         }
-
-        int charsCount = encodedBits.Count / 16;
-
-        var encodedChars = new char[charsCount];
-
-        for (int i = 0; i < charsCount; i++)
-        {
-            for (int j = i * 16; j < (i + 1) * 16; j++)
-            {
-                encodedChars[i] |= (char)((char)encodedBits[j] << 15 - (j - i * 16));
-            }
-        }
-
-        return new string(encodedChars);
+        
+        return BinaryToString(encodedBits.ToString().TrimEnd());
     }
     
     private bool LengthEnough(string container, int inputLength)
@@ -82,5 +82,23 @@ public class ChangingNumberOfSpacesEncryptor : EncryptorBase, ISteganography
         }
 
         return false;
+    }
+    
+    private string BinaryToString(string binary)
+    {
+        var sb = new StringBuilder();
+
+        var binaryValues = binary.Split(' ');
+        foreach (string binaryValue in binaryValues)
+        {
+            // Преобразование двоичной строки в целое число
+            var asciiValue = Convert.ToInt32(binaryValue, 2);
+
+            // Преобразование ASCII-кода в символ и добавление его к результату
+            var character = (char)asciiValue;
+            sb.Append(character);
+        }
+
+        return sb.ToString();
     }
 }
