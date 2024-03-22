@@ -67,7 +67,7 @@ $(document).ready(function() {
         });
         
         if ('@string.IsNullOrEmpty(labsContext.LabProperties.KeyPattern)' === 'True') {
-            $('#key').prop('disabled', true);
+            $('.form-key').remove();
         }
         
         $('#container').val("Этот контейнер состоит из нескольких предложений.\n" +
@@ -143,23 +143,19 @@ $(document).ready(function() {
 
             @if (ViewBag.IsSteganography)
             {
-                <div class="pt-3">
-                    <div class="form-input col">
-                        <textarea rows="6" class="auto-height" id="container" asp-for="Container"></textarea>
-                        <label asp-for="Container"></label>
-                        <span asp-validation-for="Container" class="text-danger"></span>
-                    </div>
+                <div class="form-input col">
+                    <textarea rows="6" class="auto-height" id="container" asp-for="Container"></textarea>
+                    <label asp-for="Container"></label>
+                    <span asp-validation-for="Container" class="text-danger"></span>
                 </div>
             }
-            
+
             @if (ViewBag.IsSteganographyBits)
             {
-                <div class="pt-3">
-                    <div class="form-input col">
-                        <input id="bits" asp-for="Bits">
-                        <label asp-for="Bits"></label>
-                        <span asp-validation-for="Bits" class="text-danger"></span>
-                    </div>
+                <div class="form-input col">
+                    <input id="bits" asp-for="Bits">
+                    <label asp-for="Bits"></label>
+                    <span asp-validation-for="Bits" class="text-danger"></span>
                 </div>
             }
 
