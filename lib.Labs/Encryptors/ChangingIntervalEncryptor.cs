@@ -34,18 +34,15 @@ public class ChangingIntervalEncryptor : EncryptorBase, ISteganography
             {
                 var numSpaces = binaryMessage[binaryMessageIndex++] == '1' ? 1 : 2;
                 stegoContainer.Append(' ', numSpaces);
-                stegoContainer.Append(ch);
-                
-                if (binaryMessageIndex == binaryMessage.Length)
-                {
-                    stegoContainer.Append(END_MARKER);
-                    stegoContainer.Append(Container.AsSpan(symbolIndex, Container.Length - symbolIndex));
-                    break;
-                }
             }
-            else
+
+            stegoContainer.Append(ch);
+
+            if (binaryMessageIndex == binaryMessage.Length)
             {
-                stegoContainer.Append(ch);
+                stegoContainer.Append(END_MARKER);
+                stegoContainer.Append(Container.AsSpan(symbolIndex, Container.Length - symbolIndex));
+                break;
             }
 
             symbolIndex++;
@@ -58,7 +55,7 @@ public class ChangingIntervalEncryptor : EncryptorBase, ISteganography
     {
         var encodedBits = new StringBuilder();
         var index = 0;
-        
+
         for (int i = 0; i < container.Length; i++)
         {
             if (container[i] == END_MARKER) break;
@@ -69,7 +66,7 @@ public class ChangingIntervalEncryptor : EncryptorBase, ISteganography
                 if (++index % 16 == 0) encodedBits.Append(' ');
             }
         }
-        
+
         return BinaryToString(encodedBits.ToString().TrimEnd());
     }
 
