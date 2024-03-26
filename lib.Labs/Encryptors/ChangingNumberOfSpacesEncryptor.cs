@@ -25,14 +25,15 @@ public class ChangingNumberOfSpacesEncryptor : EncryptorBase, ISteganography
         // Размещение сообщения в контейнере
         var stegoContainer = new StringBuilder();
         var binaryMessageIndex = 0;
-        var symbolIndex = 0;
-
+        var totalNumSpaces = 0;
+        
         foreach (char ch in Container)
         {
             if (ch == '\n')
             {
                 var numSpaces = binaryMessage[binaryMessageIndex++] == '1' ? 1 : 2;
                 stegoContainer.Append(' ', numSpaces);
+                totalNumSpaces += numSpaces;
             }
 
             stegoContainer.Append(ch);
@@ -40,11 +41,10 @@ public class ChangingNumberOfSpacesEncryptor : EncryptorBase, ISteganography
             if (binaryMessageIndex == binaryMessage.Length)
             {
                 stegoContainer.Append(END_MARKER);
-                stegoContainer.Append(Container.AsSpan(symbolIndex, Container.Length - symbolIndex));
+                stegoContainer.Append(Container.AsSpan(stegoContainer.Length - totalNumSpaces - 1,
+                    Container.Length - (stegoContainer.Length - totalNumSpaces) - 1));
                 break;
             }
-
-            symbolIndex++;
         }
 
         return stegoContainer.ToString();
