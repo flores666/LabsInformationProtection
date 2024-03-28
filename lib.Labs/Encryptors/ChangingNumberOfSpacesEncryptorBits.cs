@@ -56,67 +56,33 @@ public class ChangingNumberOfSpacesEncryptorBits : EncryptorBase, ISteganography
 
         return stegoContainer.ToString();
     }
-    
+
     public override string Decrypt(string input)
     {
-        List<byte> encodedBits = new(16);
-
-        for (int i = 0; i < input.Length; i++)
-        {
-            if (input[i] == '\n' && (input[i - 1] == ' ' || input[i - 1] == (char)160))
-            {
-                var toAdd = new Stack<byte>(BitsNumber);
-
-                for (int j = 0; j < BitsNumber; j++)
-                {
-                    if (input[(i - 1) - j] == ' ')
-                        toAdd.Push(0);
-                    else
-                        toAdd.Push(1);
-                }
-
-                while (toAdd.Count != 0)
-                    encodedBits.Add(toAdd.Pop());
-            }
-        }
-
-        int charsCount = encodedBits.Count / 16;
-
-        // encodedBits.Count + encodedBits.Count % 2 - since each char is 2 bytes 
-        var encodedChars = new char[charsCount];
-
-        for (int i = 0; i < charsCount; i++)
-        {
-            for (int j = i * 16; j < (i + 1) * 16; j++)
-            {
-                encodedChars[i] |= (char)((char)encodedBits[j] << 15 - (j - i * 16));
-            }
-        }
-
-        return new string(encodedChars);
-    }
-
-    /*public override string Decrypt(string input)
-    {
         var encodedBits = new StringBuilder();
-        var index = 0;
 
         for (int i = 0; i < input.Length; i++)
         {
             if (input[i] == END_MARKER) break;
             if (input[i] == '\n')
             {
-                for (int j = 1; j <= BitsNumber; j++)
+                var stack = new Stack<byte>(BitsNumber);
+
+                for (int j = 0; j < BitsNumber; j++)
                 {
-                    if (input[i - j] == ' ') encodedBits.Append('0');
-                    else encodedBits.Append('1');
-                    if (++index % 16 == 0) encodedBits.Append(' ');
+                    if (input[(i - 1) - j] == ' ')
+                        stack.Push(0);
+                    else
+                        stack.Push(1);
                 }
+
+                while (stack.Count != 0)
+                    encodedBits.Append(stack.Pop());
             }
         }
 
         return BinaryToString(encodedBits.ToString().TrimEnd());
-    }*/
+    }
 
     private bool LengthEnough(string container, int inputLength)
     {
